@@ -1,4 +1,4 @@
-package com.pokemonreview.api.exceptions;
+package com.pokemonreview.api.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

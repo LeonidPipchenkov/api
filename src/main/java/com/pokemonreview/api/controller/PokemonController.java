@@ -1,7 +1,6 @@
-package com.pokemonreview.api.controllers;
+package com.pokemonreview.api.controller;
 
 import com.pokemonreview.api.dto.PokemonDto;
-import com.pokemonreview.api.models.Pokemon;
 import com.pokemonreview.api.service.PokemonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -34,8 +33,8 @@ public class PokemonController {
     }
 
     @GetMapping("/pokemon/{id}")
-    public ResponseEntity<Pokemon> pokemonDetail(@PathVariable("id") int pokemonId) {
-        return ResponseEntity.ok(new Pokemon(pokemonId, "Squirtle", "Water"));
+    public ResponseEntity<PokemonDto> pokemonDetail(@PathVariable("id") int pokemonId) {
+        return new ResponseEntity<>(pokemonService.getPokemonById(pokemonId), HttpStatus.OK);
     }
 
     @PostMapping("/pokemon/create")
@@ -44,11 +43,9 @@ public class PokemonController {
     }
 
     @PutMapping("/pokemon/{id}/update")
-    public ResponseEntity<Pokemon> updatePokemon(@PathVariable("id") int pokemonId, @RequestBody Pokemon pokemon) {
-        pokemon.setId(pokemonId);
-        System.out.println(pokemon.getName());
-        System.out.println(pokemon.getType());
-        return ResponseEntity.ok(pokemon);
+    public ResponseEntity<PokemonDto> updatePokemon(@PathVariable("id") int pokemonId, @RequestBody PokemonDto pokemonDto) {
+        PokemonDto response = pokemonService.updatePokemon(pokemonId, pokemonDto);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @DeleteMapping("/pokemon/{id}/delete")

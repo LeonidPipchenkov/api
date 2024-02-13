@@ -1,4 +1,4 @@
-package com.pokemonreview.api.exceptions;
+package com.pokemonreview.api.exception;
 
 public class PokemonNotFoundException extends RuntimeException {
 

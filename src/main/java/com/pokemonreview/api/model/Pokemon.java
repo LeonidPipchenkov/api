@@ -1,4 +1,4 @@
-package com.pokemonreview.api.models;
+package com.pokemonreview.api.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -12,13 +12,12 @@ import lombok.NoArgsConstructor;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-public class Review {
+public class Pokemon {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private String title;
-    private String content;
-    private int start;
+    private String name;
+    private String type;
 
 }
