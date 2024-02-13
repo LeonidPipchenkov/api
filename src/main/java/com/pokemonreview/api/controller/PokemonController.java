@@ -33,7 +33,7 @@ public class PokemonController {
     }
 
     @GetMapping("/pokemon/{id}")
-    public ResponseEntity<PokemonDto> pokemonDetail(@PathVariable("id") int pokemonId) {
+    public ResponseEntity<PokemonDto> pokemonDetails(@PathVariable("id") int pokemonId) {
         return new ResponseEntity<>(pokemonService.getPokemonById(pokemonId), HttpStatus.OK);
     }
 
@@ -50,8 +50,8 @@ public class PokemonController {
 
     @DeleteMapping("/pokemon/{id}/delete")
     public ResponseEntity<String> deletePokemon(@PathVariable("id") int pokemonId) {
-        System.out.println(pokemonId);
-        return ResponseEntity.ok("Pokemon deleted successfully");
+        pokemonService.deletePokemon(pokemonId);
+        return new ResponseEntity<>("Pokemon deleted", HttpStatus.OK);
     }
 
 }

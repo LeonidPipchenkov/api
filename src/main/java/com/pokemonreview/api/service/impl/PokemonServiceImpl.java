@@ -22,6 +22,19 @@ public class PokemonServiceImpl implements PokemonService {
     }
 
     @Override
+    public List<PokemonDto> getAllPokemons() {
+        List<Pokemon> pokemons = pokemonRepository.findAll();
+        return pokemons.stream().map(p -> mapToDto(p)).collect(Collectors.toList());
+    }
+
+    @Override
+    public PokemonDto getPokemonById(int pokemonId) {
+        Pokemon pokemon = pokemonRepository.findById(pokemonId)
+                .orElseThrow(() -> new PokemonNotFoundException("Pokemon could not be found"));
+        return mapToDto(pokemon);
+    }
+
+    @Override
     public PokemonDto createPokemon(PokemonDto pokemonDto) {
         Pokemon pokemon = new Pokemon();
         pokemon.setName(pokemonDto.getName());
@@ -37,19 +50,6 @@ public class PokemonServiceImpl implements PokemonService {
     }
 
     @Override
-    public List<PokemonDto> getAllPokemons() {
-        List<Pokemon> pokemons = pokemonRepository.findAll();
-        return pokemons.stream().map(p -> mapToDto(p)).collect(Collectors.toList());
-    }
-
-    @Override
-    public PokemonDto getPokemonById(int pokemonId) {
-        Pokemon pokemon = pokemonRepository.findById(pokemonId)
-                .orElseThrow(() -> new PokemonNotFoundException("Pokemon could not be found"));
-        return mapToDto(pokemon);
-    }
-
-    @Override
     public PokemonDto updatePokemon(int pokemonId, PokemonDto pokemonDto) {
         Pokemon pokemon = pokemonRepository.findById(pokemonId)
                 .orElseThrow(() -> new PokemonNotFoundException("Pokemon could not be updated"));
@@ -57,6 +57,13 @@ public class PokemonServiceImpl implements PokemonService {
         pokemon.setType(pokemonDto.getType());
         Pokemon updatedPokemon = pokemonRepository.save(pokemon);
         return mapToDto(updatedPokemon);
+    }
+
+    @Override
+    public void deletePokemon(int pokemonId) {
+        Pokemon pokemon = pokemonRepository.findById(pokemonId)
+                .orElseThrow(() -> new PokemonNotFoundException("Pokemon could not be deleted"));
+        pokemonRepository.delete(pokemon);
     }
 
     private PokemonDto mapToDto(Pokemon pokemon) {
