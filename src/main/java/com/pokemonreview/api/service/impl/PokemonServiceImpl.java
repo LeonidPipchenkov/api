@@ -52,17 +52,9 @@ public class PokemonServiceImpl implements PokemonService {
 
     @Override
     public PokemonDto createPokemon(PokemonDto pokemonDto) {
-        Pokemon pokemon = new Pokemon();
-        pokemon.setName(pokemonDto.getName());
-        pokemon.setType(pokemonDto.getType());
-
-        Pokemon newPokemon = pokemonRepository.save(pokemon);
-
-        PokemonDto pokemonResponse = new PokemonDto();
-        pokemonResponse.setId(newPokemon.getId());
-        pokemonResponse.setName(newPokemon.getName());
-        pokemonResponse.setType(newPokemon.getType());
-        return pokemonResponse;
+        Pokemon pokemon = mapToEntity(pokemonDto);
+        Pokemon createdPokemon = pokemonRepository.save(pokemon);
+        return mapToDto(createdPokemon);
     }
 
     @Override
