@@ -28,30 +28,30 @@ public class ReviewController {
     }
 
     @GetMapping("/pokemon/{pokemonId}/review")
-    public ResponseEntity<List<ReviewDto>> getReviewsByPokemonId(@PathVariable(value = "pokemonId") int pokemonId) {
+    public ResponseEntity<List<ReviewDto>> getReviewsByPokemonId(@PathVariable int pokemonId) {
         return new ResponseEntity<>(reviewService.getReviewsByPokemonId(pokemonId), HttpStatus.OK);
     }
 
     @GetMapping("/pokemon/{pokemonId}/review/{reviewId}")
-    public ResponseEntity<ReviewDto> getReviewById(@PathVariable(value = "pokemonId") int pokemonId, @PathVariable(value = "reviewId") int reviewId) {
-        ReviewDto reviewDto = reviewService.getReviewById(pokemonId, reviewId);
-        return new ResponseEntity<>(reviewDto, HttpStatus.OK);
+    public ResponseEntity<ReviewDto> getReviewById(@PathVariable int pokemonId, @PathVariable int reviewId) {
+        ReviewDto response = reviewService.getReviewById(pokemonId, reviewId);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PostMapping("/pokemon/{pokemonId}/review")
-    public ResponseEntity<ReviewDto> createReview(@PathVariable(value = "pokemonId") int pokemonId, @RequestBody ReviewDto reviewDto) {
-        return new ResponseEntity<>(reviewService.createReview(pokemonId, reviewDto), HttpStatus.CREATED);
+    public ResponseEntity<ReviewDto> createReview(@PathVariable int pokemonId, @RequestBody ReviewDto reviewDto) {
+        ReviewDto response = reviewService.createReview(pokemonId, reviewDto);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     @PutMapping("/pokemon/{pokemonId}/review/{reviewId}")
-    public ResponseEntity<ReviewDto> updateReview(@PathVariable(value = "pokemonId") int pokemonId, @PathVariable(value = "reviewId") int reviewId,
-                                                  @RequestBody ReviewDto reviewDto) {
-        ReviewDto updatedReview = reviewService.updateReview(pokemonId, reviewId, reviewDto);
-        return new ResponseEntity<>(updatedReview, HttpStatus.OK);
+    public ResponseEntity<ReviewDto> updateReview(@PathVariable int pokemonId, @PathVariable int reviewId, @RequestBody ReviewDto reviewDto) {
+        ReviewDto response = reviewService.updateReview(pokemonId, reviewId, reviewDto);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @DeleteMapping("/pokemon/{pokemonId}/review/{reviewId}")
-    public ResponseEntity<String> deleteReview(@PathVariable(value = "pokemonId") int pokemonId, @PathVariable(value = "reviewId") int reviewId) {
+    public ResponseEntity<String> deleteReview(@PathVariable int pokemonId, @PathVariable int reviewId) {
         reviewService.deleteReview(pokemonId, reviewId);
         return new ResponseEntity<>("Review deleted", HttpStatus.OK);
     }
