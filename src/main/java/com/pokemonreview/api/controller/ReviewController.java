@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -39,6 +40,13 @@ public class ReviewController {
     @PostMapping("/pokemon/{pokemonId}/review")
     public ResponseEntity<ReviewDto> createReview(@PathVariable(value = "pokemonId") int pokemonId, @RequestBody ReviewDto reviewDto) {
         return new ResponseEntity<>(reviewService.createReview(pokemonId, reviewDto), HttpStatus.CREATED);
+    }
+
+    @PutMapping("/pokemon/{pokemonId}/review/{reviewId}")
+    public ResponseEntity<ReviewDto> updateReview(@PathVariable(value = "pokemonId") int pokemonId, @PathVariable(value = "reviewId") int reviewId,
+                                                  @RequestBody ReviewDto reviewDto) {
+        ReviewDto updatedReview = reviewService.updateReview(pokemonId, reviewId, reviewDto);
+        return new ResponseEntity<>(updatedReview, HttpStatus.OK);
     }
 
 }
