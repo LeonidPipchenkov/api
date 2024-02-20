@@ -5,6 +5,7 @@ import com.pokemonreview.api.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -47,6 +48,12 @@ public class ReviewController {
                                                   @RequestBody ReviewDto reviewDto) {
         ReviewDto updatedReview = reviewService.updateReview(pokemonId, reviewId, reviewDto);
         return new ResponseEntity<>(updatedReview, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/pokemon/{pokemonId}/review/{reviewId}")
+    public ResponseEntity<String> deleteReview(@PathVariable(value = "pokemonId") int pokemonId, @PathVariable(value = "reviewId") int reviewId) {
+        reviewService.deleteReview(pokemonId, reviewId);
+        return new ResponseEntity<>("Review deleted", HttpStatus.OK);
     }
 
 }
