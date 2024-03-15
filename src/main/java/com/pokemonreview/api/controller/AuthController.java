@@ -1,11 +1,13 @@
 package com.pokemonreview.api.controller;
 
+import com.pokemonreview.api.dto.AuthResponse;
 import com.pokemonreview.api.dto.LoginDto;
 import com.pokemonreview.api.dto.RegisterDto;
 import com.pokemonreview.api.model.Role;
 import com.pokemonreview.api.model.UserEntity;
 import com.pokemonreview.api.repository.RoleRepository;
 import com.pokemonreview.api.repository.UserRepository;
+import com.pokemonreview.api.security.JwtHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,14 +31,16 @@ public class AuthController {
     private RoleRepository roleRepository;
     private AuthenticationManager authenticationManager;
     private PasswordEncoder passwordEncoder;
+    private JwtHandler jwtHandler;
 
     @Autowired
     public AuthController(UserRepository userRepository, RoleRepository roleRepository, AuthenticationManager authenticationManager,
-                          PasswordEncoder passwordEncoder) {
+                          PasswordEncoder passwordEncoder, JwtHandler jwtHandler) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.authenticationManager = authenticationManager;
         this.passwordEncoder = passwordEncoder;
+        this.jwtHandler = jwtHandler;
     }
 
     @PostMapping("/auth/register")
@@ -54,11 +58,12 @@ public class AuthController {
     }
 
     @PostMapping("/auth/login")
-    public ResponseEntity<String> login(@RequestBody LoginDto loginDto) {
+    public ResponseEntity<AuthResponse> login(@RequestBody LoginDto loginDto) {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDto.getUsername(),
                 loginDto.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        return new ResponseEntity<>("User logged in successfully!", HttpStatus.OK);
+        String token = jwtHandler.generateToken(authentication);
+        return new ResponseEntity<>(new AuthResponse(token), HttpStatus.OK);
     }
 
 }
