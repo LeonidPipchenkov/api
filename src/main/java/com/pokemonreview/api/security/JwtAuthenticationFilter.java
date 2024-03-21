@@ -10,21 +10,27 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
+@Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
+    private final UserDetailsService userDetailsService;
+    private final JwtHandler jwtHandler;
+
     @Autowired
-    private UserDetailsService userDetailsService;
-    @Autowired
-    private JwtHandler jwtHandler;
+    public JwtAuthenticationFilter(UserDetailsService userDetailsService, JwtHandler jwtHandler) {
+        this.userDetailsService = userDetailsService;
+        this.jwtHandler = jwtHandler;
+    }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
-                                    FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+            throws ServletException, IOException {
         String token = getJwtFromRequest(request);
         if (StringUtils.hasText(token) && jwtHandler.validateToken(token)) {
             String username = jwtHandler.getUsernameFromToken(token);

@@ -10,6 +10,15 @@ import java.util.Date;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
+    @ExceptionHandler(UsernameAlreadyTakenException.class)
+    public ResponseEntity<ErrorObject> handleUsernameAlreadyTakenException(UsernameAlreadyTakenException ex) {
+        ErrorObject errorObject = new ErrorObject();
+        errorObject.setStatusCode(HttpStatus.BAD_REQUEST.value());
+        errorObject.setMessage(ex.getMessage());
+        errorObject.setTimestamp(new Date());
+        return new ResponseEntity<>(errorObject, HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(PokemonNotFoundException.class)
     public ResponseEntity<ErrorObject> handlePokemonNotFoundException(PokemonNotFoundException ex) {
         ErrorObject errorObject = new ErrorObject();

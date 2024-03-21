@@ -13,12 +13,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class PokemonServiceImpl implements PokemonService {
 
-    private PokemonRepository pokemonRepository;
+    private final PokemonRepository pokemonRepository;
 
     @Autowired
     public PokemonServiceImpl(PokemonRepository pokemonRepository) {
@@ -26,20 +27,24 @@ public class PokemonServiceImpl implements PokemonService {
     }
 
     @Override
+    public Optional<Pokemon> findById(int pokemonId) {
+        return pokemonRepository.findById(pokemonId);
+    }
+
+    @Override
     public PokemonResponse getAllPokemons(int pageNo, int pageSize) {
         Pageable pageable = PageRequest.of(pageNo, pageSize);
-        Page<Pokemon> pokemons = pokemonRepository.findAll(pageable);
-
-        List<Pokemon> pokemonList = pokemons.getContent();
-        List<PokemonDto> content = pokemonList.stream().map(p -> mapToDto(p)).collect(Collectors.toList());
+        Page<Pokemon> pokemonPage = pokemonRepository.findAll(pageable);
+        List<Pokemon> pokemonList = pokemonPage.getContent();
+        List<PokemonDto> content = pokemonList.stream().map(this::mapToDto).collect(Collectors.toList());
 
         PokemonResponse pokemonResponse = new PokemonResponse();
         pokemonResponse.setContent(content);
-        pokemonResponse.setPageNo(pokemons.getNumber());
-        pokemonResponse.setPageSize(pokemons.getSize());
-        pokemonResponse.setTotalElements(pokemons.getTotalElements());
-        pokemonResponse.setTotalPages(pokemons.getTotalPages());
-        pokemonResponse.setLast(pokemons.isLast());
+        pokemonResponse.setPageNo(pokemonPage.getNumber());
+        pokemonResponse.setPageSize(pokemonPage.getSize());
+        pokemonResponse.setTotalElements(pokemonPage.getTotalElements());
+        pokemonResponse.setTotalPages(pokemonPage.getTotalPages());
+        pokemonResponse.setLast(pokemonPage.isLast());
         return pokemonResponse;
     }
 

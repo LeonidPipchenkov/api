@@ -20,7 +20,7 @@ import java.util.List;
 @RequestMapping("/api")
 public class ReviewController {
 
-    private ReviewService reviewService;
+    private final ReviewService reviewService;
 
     @Autowired
     public ReviewController(ReviewService reviewService) {
@@ -53,7 +53,7 @@ public class ReviewController {
     @DeleteMapping("/pokemon/{pokemonId}/review/{reviewId}")
     public ResponseEntity<String> deleteReview(@PathVariable int pokemonId, @PathVariable int reviewId) {
         reviewService.deleteReview(pokemonId, reviewId);
-        return new ResponseEntity<>("Review deleted", HttpStatus.OK);
+        return new ResponseEntity<>("Review deleted successfully", HttpStatus.OK);
     }
 
 }

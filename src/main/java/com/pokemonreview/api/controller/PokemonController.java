@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api")
 public class PokemonController {
 
-    private PokemonService pokemonService;
+    private final PokemonService pokemonService;
 
     @Autowired
     public PokemonController(PokemonService pokemonService) {
@@ -53,7 +53,7 @@ public class PokemonController {
     @DeleteMapping("/pokemon/{id}/delete")
     public ResponseEntity<String> deletePokemon(@PathVariable("id") int pokemonId) {
         pokemonService.deletePokemon(pokemonId);
-        return new ResponseEntity<>("Pokemon deleted", HttpStatus.OK);
+        return new ResponseEntity<>("Pokemon deleted successfully", HttpStatus.OK);
     }
 
 }

@@ -3,8 +3,7 @@ package com.pokemonreview.api.security;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
-import org.springframework.security.authentication.CredentialsExpiredException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
@@ -33,11 +32,7 @@ public class JwtHandler {
     }
 
     public boolean validateToken(String token) {
-        Claims claims = getClaimsFromToken(token);
-        Date expirationDate = claims.getExpiration();
-        if (expirationDate.before(new Date())) {
-            throw new CredentialsExpiredException("JWT expired");
-        }
+        getClaimsFromToken(token);
         return true;
     }
 
@@ -50,7 +45,7 @@ public class JwtHandler {
                     .parseSignedClaims(token)
                     .getPayload();
         } catch (Exception ex) {
-            throw new AuthenticationCredentialsNotFoundException("Incorrect JWT");
+            throw new BadCredentialsException("Invalid JWT - " + ex.getMessage());
         }
     }
 
