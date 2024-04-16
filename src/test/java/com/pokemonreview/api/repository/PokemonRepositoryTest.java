@@ -8,6 +8,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -17,20 +18,6 @@ public class PokemonRepositoryTest {
 
     @Autowired
     private PokemonRepository pokemonRepository;
-
-    @Test
-    void save_shouldReturnSavedPokemon() {
-        // Arrange
-        Pokemon pokemon = Pokemon.builder()
-                .name("Pikachu")
-                .type("Electric")
-                .build();
-        // Act
-        Pokemon savedPokemon = pokemonRepository.save(pokemon);
-        // Assert
-        assertThat(savedPokemon).isNotNull();
-        assertThat(savedPokemon.getId()).isGreaterThan(0);
-    }
 
     @Test
     void findAll_shouldReturnPokemonList() {
@@ -62,6 +49,55 @@ public class PokemonRepositoryTest {
         Pokemon returnedPokemon = pokemonRepository.findById(pokemon.getId()).orElse(null);
 
         assertThat(returnedPokemon).isNotNull();
+    }
+
+    @Test
+    void save_shouldReturnSavedPokemon() {
+        // Arrange
+        Pokemon pokemon = Pokemon.builder()
+                .name("Pikachu")
+                .type("Electric")
+                .build();
+        // Act
+        Pokemon savedPokemon = pokemonRepository.save(pokemon);
+        // Assert
+        assertThat(savedPokemon).isNotNull();
+        assertThat(savedPokemon.getId()).isGreaterThan(0);
+    }
+
+    @Test
+    void save_shouldReturnUpdatedPokemon() {
+        Pokemon pokemon = Pokemon.builder()
+                .name("Pikachu")
+                .type("electric")
+                .build();
+        pokemonRepository.save(pokemon);
+
+        Pokemon updatedPokemon = null;
+        Optional<Pokemon> optionalPokemon = pokemonRepository.findById(pokemon.getId());
+        if (optionalPokemon.isPresent()) {
+            optionalPokemon.get().setName("Raichu");
+            optionalPokemon.get().setType("Electric");
+            updatedPokemon = pokemonRepository.save(optionalPokemon.get());
+        }
+
+        assertThat(updatedPokemon).isNotNull();
+        assertThat(updatedPokemon.getName()).isNotNull();
+        assertThat(updatedPokemon.getType()).isNotNull();
+    }
+
+    @Test
+    void deleteById_shouldDeletePokemon() {
+        Pokemon pokemon = Pokemon.builder()
+                .name("Pikachu")
+                .type("Electric")
+                .build();
+        pokemonRepository.save(pokemon);
+
+        pokemonRepository.deleteById(pokemon.getId());
+        Optional<Pokemon> optionalPokemon = pokemonRepository.findById(pokemon.getId());
+
+        assertThat(optionalPokemon).isEmpty();
     }
 
 }
