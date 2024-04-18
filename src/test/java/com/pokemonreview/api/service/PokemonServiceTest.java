@@ -104,6 +104,7 @@ public class PokemonServiceTest {
     @Test
     void deletePokemon_shouldCallDelete() {
         Pokemon pokemon = Pokemon.builder()
+                .id(1)
                 .name("Pikachu")
                 .type("Electric")
                 .build();
