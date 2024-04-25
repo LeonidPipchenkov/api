@@ -78,7 +78,7 @@ public class ReviewServiceImpl implements ReviewService {
         reviewRepository.delete(review);
     }
 
-    private Pokemon fetchPokemon(int pokemonId) {
+    Pokemon fetchPokemon(int pokemonId) {
         return pokemonService.findById(pokemonId)
                 .orElseThrow(() -> new PokemonNotFoundException("Pokemon with associated review could not be found"));
     }
