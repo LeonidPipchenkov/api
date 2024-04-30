@@ -16,18 +16,23 @@ import static org.assertj.core.api.Assertions.assertThat;
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 public class PokemonRepositoryTest {
 
+    private final static String PIKACHU_NAME = "Pikachu";
+    private final static String RAICHU_NAME = "Raichu";
+    private final static String ELECTRIC_TYPE = "Electric";
+    private final static String NOT_ELECTRIC_TYPE = "Not electric";
+
     @Autowired
     private PokemonRepository pokemonRepository;
 
     @Test
     void findAll_shouldReturnPokemonList() {
         Pokemon pokemon = Pokemon.builder()
-                .name("Pikachu")
-                .type("Electric")
+                .name(PIKACHU_NAME)
+                .type(ELECTRIC_TYPE)
                 .build();
         Pokemon pokemon2 = Pokemon.builder()
-                .name("Pikachu")
-                .type("Electric")
+                .name(RAICHU_NAME)
+                .type(ELECTRIC_TYPE)
                 .build();
         pokemonRepository.save(pokemon);
         pokemonRepository.save(pokemon2);
@@ -41,8 +46,8 @@ public class PokemonRepositoryTest {
     @Test
     void findById_shouldReturnPokemon() {
         Pokemon pokemon = Pokemon.builder()
-                .name("Pikachu")
-                .type("Electric")
+                .name(PIKACHU_NAME)
+                .type(ELECTRIC_TYPE)
                 .build();
         pokemonRepository.save(pokemon);
 
@@ -55,8 +60,8 @@ public class PokemonRepositoryTest {
     void save_shouldReturnSavedPokemon() {
         // Arrange
         Pokemon pokemon = Pokemon.builder()
-                .name("Pikachu")
-                .type("Electric")
+                .name(PIKACHU_NAME)
+                .type(ELECTRIC_TYPE)
                 .build();
         // Act
         Pokemon savedPokemon = pokemonRepository.save(pokemon);
@@ -68,16 +73,16 @@ public class PokemonRepositoryTest {
     @Test
     void save_shouldReturnUpdatedPokemon() {
         Pokemon pokemon = Pokemon.builder()
-                .name("Pikachu")
-                .type("electric")
+                .name(PIKACHU_NAME)
+                .type(NOT_ELECTRIC_TYPE)
                 .build();
         pokemonRepository.save(pokemon);
 
         Pokemon updatedPokemon = null;
         Optional<Pokemon> optionalPokemon = pokemonRepository.findById(pokemon.getId());
         if (optionalPokemon.isPresent()) {
-            optionalPokemon.get().setName("Raichu");
-            optionalPokemon.get().setType("Electric");
+            optionalPokemon.get().setName(RAICHU_NAME);
+            optionalPokemon.get().setType(ELECTRIC_TYPE);
             updatedPokemon = pokemonRepository.save(optionalPokemon.get());
         }
 
@@ -89,8 +94,8 @@ public class PokemonRepositoryTest {
     @Test
     void deleteById_shouldDeletePokemon() {
         Pokemon pokemon = Pokemon.builder()
-                .name("Pikachu")
-                .type("Electric")
+                .name(PIKACHU_NAME)
+                .type(ELECTRIC_TYPE)
                 .build();
         pokemonRepository.save(pokemon);
 

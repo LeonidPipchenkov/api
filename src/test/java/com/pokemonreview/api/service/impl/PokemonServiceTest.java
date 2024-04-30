@@ -26,7 +26,7 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 public class PokemonServiceTest {
 
-    private static final int POKEMON_ID = 1;
+    private final static int POKEMON_ID = 1;
 
     @Mock
     private PokemonRepository pokemonRepository;

@@ -16,20 +16,26 @@ import static org.assertj.core.api.Assertions.assertThat;
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 public class ReviewRepositoryTest {
 
+    private final static String TITLE = "Review";
+    private final static String ANOTHER_TITLE = "Another review";
+    private final static String CONTENT = "It is content";
+    private final static String ANOTHER_CONTENT = "It is another content";
+    private final static int STARS = 5;
+
     @Autowired
     private ReviewRepository reviewRepository;
 
     @Test
     void findAll_shouldReturnReviewList() {
         Review review = Review.builder()
-                .title("Review")
-                .content("It is content")
-                .stars(5)
+                .title(TITLE)
+                .content(CONTENT)
+                .stars(STARS)
                 .build();
         Review review2 = Review.builder()
-                .title("Review")
-                .content("It is content")
-                .stars(5)
+                .title(ANOTHER_TITLE)
+                .content(ANOTHER_CONTENT)
+                .stars(STARS)
                 .build();
         reviewRepository.save(review);
         reviewRepository.save(review2);
@@ -43,9 +49,9 @@ public class ReviewRepositoryTest {
     @Test
     void findById_shouldReturnReview() {
         Review review = Review.builder()
-                .title("Review")
-                .content("It is content")
-                .stars(5)
+                .title(TITLE)
+                .content(CONTENT)
+                .stars(STARS)
                 .build();
         reviewRepository.save(review);
 
@@ -57,9 +63,9 @@ public class ReviewRepositoryTest {
     @Test
     void save_shouldReturnSavedReview() {
         Review review = Review.builder()
-                .title("Review")
-                .content("It is content")
-                .stars(5)
+                .title(TITLE)
+                .content(CONTENT)
+                .stars(STARS)
                 .build();
 
         Review savedReview = reviewRepository.save(review);
@@ -71,17 +77,17 @@ public class ReviewRepositoryTest {
     @Test
     void save_shouldReturnUpdatedReview() {
         Review review = Review.builder()
-                .title("View")
-                .content("it is content")
-                .stars(5)
+                .title(ANOTHER_TITLE)
+                .content(ANOTHER_CONTENT)
+                .stars(STARS)
                 .build();
         reviewRepository.save(review);
 
         Review updatedReview = null;
         Optional<Review> optionalReview = reviewRepository.findById(review.getId());
         if (optionalReview.isPresent()) {
-            optionalReview.get().setTitle("Review");
-            optionalReview.get().setContent("It is content");
+            optionalReview.get().setTitle(TITLE);
+            optionalReview.get().setContent(CONTENT);
             updatedReview = reviewRepository.save(optionalReview.get());
         }
 
@@ -93,9 +99,9 @@ public class ReviewRepositoryTest {
     @Test
     void deleteById_shouldDeleteReview() {
         Review review = Review.builder()
-                .title("Review")
-                .content("It is content")
-                .stars(5)
+                .title(TITLE)
+                .content(CONTENT)
+                .stars(STARS)
                 .build();
         reviewRepository.save(review);
 
