@@ -78,7 +78,7 @@ public class ReviewServiceTest {
         Review review = mock(Review.class);
         doReturn(pokemon).when(review).getPokemon();
         doReturn(Optional.of(review)).when(reviewRepository).findById(REVIEW_ID);
-        doReturn(review).when(reviewRepository).save(review);
+        doReturn(review).when(reviewRepository).save(any(Review.class));
 
         ReviewDto updatedReviewDto = reviewService.updateReview(POKEMON_ID, REVIEW_ID, reviewDto);
 

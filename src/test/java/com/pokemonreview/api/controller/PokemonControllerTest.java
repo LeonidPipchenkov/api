@@ -99,7 +99,7 @@ public class PokemonControllerTest {
                 .name(NAME)
                 .type(TYPE)
                 .build();
-        willReturn(createdPokemonDto).given(pokemonService).createPokemon(any());
+        willReturn(createdPokemonDto).given(pokemonService).createPokemon(any(PokemonDto.class));
 
         ResultActions response = mockMvc.perform(post("/api/pokemon/create")
                 .contentType(MediaType.APPLICATION_JSON)
